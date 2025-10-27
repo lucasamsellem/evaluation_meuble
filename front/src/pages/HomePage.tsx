@@ -8,17 +8,25 @@ function HomePage() {
       <Furniture
         id={crypto.randomUUID()}
         img={undefined}
-        name='Super Cupboard'
-        material='wood'
-        category='cupboard'
+        name='Super étagère'
+        material='aluminium'
+        category='armoire'
       />
 
       <Furniture
         id={crypto.randomUUID()}
         img={undefined}
-        name='Super Shelf'
-        material='iron'
-        category='shelf'
+        name='Super armoire'
+        material='noyer'
+        category='étagère'
+      />
+
+      <Furniture
+        id={crypto.randomUUID()}
+        img={undefined}
+        name='Armoire en aluminium'
+        material='aluminium'
+        category='armoire'
       />
     </ul>
   );
