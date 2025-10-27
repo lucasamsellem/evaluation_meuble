@@ -1,17 +1,25 @@
 // SEULE PAGE PROtégée qui contient les stats
 
-import MaterialKeyword from '../components/MaterialKeyword';
+import Furniture from '../components/Furniture';
 
 function HomePage() {
   return (
-    <ul>
-      <li>
-        <MaterialKeyword material='iron' />
-      </li>
+    <ul className='flex flex-col gap-5'>
+      <Furniture
+        id={crypto.randomUUID()}
+        img={undefined}
+        name='Super Cupboard'
+        material='wood'
+        category='cupboard'
+      />
 
-      <li>
-        <MaterialKeyword material='wood' />
-      </li>
+      <Furniture
+        id={crypto.randomUUID()}
+        img={undefined}
+        name='Super Shelf'
+        material='iron'
+        category='shelf'
+      />
     </ul>
   );
 }
