@@ -61,7 +61,7 @@ function NewFurnitureForm() {
         label='Image'
         value={newFurnitureValues.img}
         onChange={(e) => setNewFurnitureValues((prev) => ({ ...prev, img: e.target.value }))}
-        placeholder='Enter a URL'
+        placeholder='URL'
       />
 
       <ActionButton type='submit'>Ajouter</ActionButton>
