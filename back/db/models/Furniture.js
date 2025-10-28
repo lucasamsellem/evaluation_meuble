@@ -5,7 +5,16 @@ const furnitureSchema = db.Schema({
 	image: String,
 	description: String,
 	quantity: { type: Number, required: true },
-	category_id: { type: Number, required: true },
+	category: {
+		name: { type: String, required: true },
+	},
+	materials: [
+		{
+			name: { type: String, required: true },
+			type: { type: String, required: true },
+			provider: { type: String, required: true },
+		},
+	],
 });
 
 const Furniture = db.model("furnitures", furnitureSchema);
