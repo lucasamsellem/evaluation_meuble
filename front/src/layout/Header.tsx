@@ -1,4 +1,5 @@
 import { NavLink } from 'react-router-dom';
+import LogoutIcon from '../assets/LogoutIcon';
 
 const NAVBAR_ELEMENTS = {
   HOME: {
@@ -32,12 +33,13 @@ function Header() {
           </ul>
         </nav>
 
-        <div className='flex items-center gap-x-3'>
+        <div className='flex items-center gap-x-5'>
           <span>Lucas Amsellem</span>
           <img
             src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimgcdn.stablediffusionweb.com%2F2024%2F12%2F11%2F35a41202-c7ab-467b-ac37-81e8f13d6eb7.jpg&f=1&nofb=1&ipt=eeb5fa124fe009ba9b7d79940295b800a7ada18ed996c293d0461a8a3e8b0a8d'
             className='w-10 rounded-full'
           />
+          <LogoutIcon />
         </div>
       </div>
     </header>

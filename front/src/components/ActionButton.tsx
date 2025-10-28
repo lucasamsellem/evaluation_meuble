@@ -8,7 +8,7 @@ type ActionButtonProps = {
 function ActionButton({ type = 'button', children, className, onClick }: ActionButtonProps) {
   return (
     <button
-      className={`text-white bg-blue-500 p-2 rounded-lg font-semibold ${className}`}
+      className={`text-white bg-blue-500 px-3 py-2 rounded-xl font-semibold ${className}`}
       onClick={onClick}
       type={type}
     >
