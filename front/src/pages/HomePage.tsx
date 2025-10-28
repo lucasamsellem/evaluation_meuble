@@ -1,12 +1,23 @@
 import ActionButton from '../components/ActionButton';
-import Furniture from '../components/Furniture';
+// import Furniture from '../components/Furniture';
 import Modal from '../components/Modal';
 import useModal from '../hooks/useModal';
 import NewFurnitureForm from '../layout/NewFurnitureForm';
-import data from '../../../back/data.ts';
+import { useEffect } from 'react';
 
 function HomePage() {
   const { isOpen, toggleModal } = useModal();
+  // const [furnitures, setFurnitures] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000')
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        // setFurnitures(data);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className='flex flex-col'>
@@ -18,7 +29,7 @@ function HomePage() {
         <NewFurnitureForm />
       </Modal>
 
-      <ul className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
+      {/* <ul className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
         {Object.values(data.furnitures).map(
           ({ description, title, image, quantity, category_id, materials }) => (
             <Furniture
@@ -32,7 +43,7 @@ function HomePage() {
             />
           )
         )}
-      </ul>
+      </ul> */}
     </div>
   );
 }
