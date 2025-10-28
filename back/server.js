@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import router from "./routes/index.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const session_secret = process.env.SESSION_SECRET || "session-secret";
 
 const server = express();
 
+server.use(cors());
 server.use(express.urlencoded({ extended: false }));
 server.use(
 	session({

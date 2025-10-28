@@ -1,7 +1,6 @@
 import Furniture from "./db/models/Furniture.js";
 import User from "./db/models/User.js";
 import data from "./data.js";
-import crypto from "crypto";
 import dotenv from "dotenv";
 
 dotenv.config();
