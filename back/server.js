@@ -7,7 +7,8 @@ dotenv.config();
 
 const port = process.env.APP_PORT || 8000;
 const host = process.env.APP_HOST || "localhost";
-const mongo_url = process.env.MONGO_URL || "mongodb://127.0.0.1:27017/session";
+const mongo_url =
+	process.env.MONGO_SESSION_URL || "mongodb://127.0.0.1:27017/session";
 const session_secret = process.env.SESSION_SECRET || "session-secret";
 
 const server = express();
