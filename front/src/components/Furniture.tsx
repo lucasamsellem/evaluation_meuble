@@ -26,6 +26,25 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
   const [newQuantity, setNewQuantity] = useState<number>(0);
   const fieldRef = useRef<HTMLDivElement>(null);
 
+  const handleUpdateQuantity = async () => {
+    try {
+      const res = await fetch('http://localhost:8000/furniture/', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: _id, updatedQuantity: newQuantity }),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Erreur HTTP : ${res.status}`);
+      }
+
+      const data = await res.json();
+      console.log('Réponse serveur :', data);
+    } catch (error) {
+      console.error('Erreur lors de la mise à jour :', error);
+    }
+  };
+
   // TODO: AJOUTER COMANY QUAND ISSA AURA FAIT
 
   useEffect(() => {
@@ -63,7 +82,7 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
 
         <div ref={fieldRef} className='flex items-center justify-between'>
           {isQuantityField ? (
-            <form className='flex items-center gap-x-2'>
+            <form className='flex items-center gap-x-2' onSubmit={(e) => e.preventDefault()}>
               <FormField
                 value={newQuantity}
                 onChange={(e) => setNewQuantity(Number(e.target.value))}
@@ -71,7 +90,7 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
                 className='w-20'
               />
 
-              <button type='submit'>
+              <button type='submit' onClick={handleUpdateQuantity}>
                 <CheckIcon />
               </button>
             </form>
