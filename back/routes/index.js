@@ -12,8 +12,6 @@ const router = Router();
 // post / login
 
 router.get("/", publicController.dashboard);
-router.get("/material/:type", publicController.materialDetail);
-
 router.post("/login", publicController.postLogin);
 
 // --- ADMIN --- (Bien vérifier que L'ADMIN EST CONNECTÉ)

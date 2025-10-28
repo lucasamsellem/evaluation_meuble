@@ -3,6 +3,8 @@ import User from "../db/models/User.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 
+console.log(process.env);
+
 export const publicController = {
 	dashboard: async (req, res) => {
 		const data = await Furniture.find({});
@@ -14,6 +16,7 @@ export const publicController = {
 			const { username, password } = req.body;
 
 			const user = await User.findOne({ username });
+			console.log(user);
 
 			// Vérifications username & password
 
@@ -36,11 +39,19 @@ export const publicController = {
 
 			// Création JWT
 
-			const token = jwt.sign({
-				userId: user._id,
-				username: user.username,
-			});
-		} catch (err) {}
+			const token = jwt.sign(
+				{
+					userId: user._id,
+					username: user.username,
+				},
+				process.env.JWT_SECRET,
+				{ expiresIn: "24h" }
+			);
+
+			res.json({ token, username: user.username });
+		} catch (err) {
+			res.status(401).json({ error: err.message });
+		}
 	},
 };
 
@@ -54,6 +65,7 @@ export const adminController = {
 	},
 
 	changeQuantity: (req, res) => {
+		console.log(req.body);
 		res.status(200).json({ message: "Quantité mise à jour (simulation)" });
 	},
 };
