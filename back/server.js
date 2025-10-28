@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import router from "./routes/index.js";
 
 dotenv.config();
 
@@ -24,9 +25,7 @@ server.use(
 	})
 );
 
-server.get("/", (req, res) => {
-	res.send("Working !");
-});
+server.use(router);
 
 server.listen(port, host, () => {
 	console.log(`Application running at http://${host}:${port}`);
