@@ -1,4 +1,4 @@
-import TextField from '../components/TextField';
+import FormField from '../components/FormField';
 import ActionButton from '../components/ActionButton';
 import { useState } from 'react';
 import SelectField from '../components/SelectField';
@@ -7,13 +7,17 @@ import { MATERIALS, CATEGORIES } from '../constants/constants';
 type NewFurnitureFormValues = {
   name: string;
   material: string;
+  quantity: number;
   category: string;
+  img: string;
 };
 
 const INITIAL_NEW_FURNITURE_VALUES: NewFurnitureFormValues = {
   name: '',
   material: '',
+  quantity: 1,
   category: 'armoire',
+  img: '',
 };
 
 function NewFurnitureForm() {
@@ -23,10 +27,19 @@ function NewFurnitureForm() {
 
   return (
     <form className='flex flex-col gap-5'>
-      <TextField
+      <FormField
         label='Nom'
         value={newFurnitureValues.name}
         onChange={(e) => setNewFurnitureValues((prev) => ({ ...prev, name: e.target.value }))}
+      />
+
+      <FormField
+        label='Quantité'
+        type='number'
+        value={newFurnitureValues.quantity}
+        onChange={(e) =>
+          setNewFurnitureValues((prev) => ({ ...prev, quantity: Number(e.target.value) }))
+        }
       />
 
       <SelectField
@@ -41,6 +54,14 @@ function NewFurnitureForm() {
         value={newFurnitureValues.category}
         options={CATEGORIES}
         onChange={(value) => setNewFurnitureValues((prev) => ({ ...prev, category: value }))}
+      />
+
+      {/* IMAGE (Url valide) */}
+      <FormField
+        label='Image'
+        value={newFurnitureValues.img}
+        onChange={(e) => setNewFurnitureValues((prev) => ({ ...prev, img: e.target.value }))}
+        placeholder='Enter a URL'
       />
 
       <ActionButton type='submit'>Ajouter</ActionButton>

@@ -21,7 +21,15 @@ export const COMPANIES: Record<string, MaterialLabel[]> = {
   pPlastique: ['plastique'],
 };
 
-export const MATERIALS = ['frêne', 'chêne', 'noyer', 'inox', 'acier', 'aluminium', 'plastique'];
+export const MATERIALS: MaterialLabel[] = [
+  'frêne',
+  'chêne',
+  'noyer',
+  'inox',
+  'acier',
+  'aluminium',
+  'plastique',
+];
 
 export const MATERIALS_DETAILS: Record<string, Material> = {
   frene: {

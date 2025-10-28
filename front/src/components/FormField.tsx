@@ -1,22 +1,22 @@
 import React from 'react';
 
-interface TextFieldProps {
+interface FormFieldProps {
   label: string;
-  value: string;
+  value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: string;
   name?: string;
 }
 
-function TextField({
+function FormField({
   label,
   value,
   onChange,
   placeholder = '',
   type = 'text',
   name,
-}: TextFieldProps) {
+}: FormFieldProps) {
   return (
     <div className='flex flex-col gap-1'>
       <label htmlFor={name} className='text-sm font-medium text-gray-700'>
@@ -35,4 +35,4 @@ function TextField({
   );
 }
 
-export default TextField;
+export default FormField;
