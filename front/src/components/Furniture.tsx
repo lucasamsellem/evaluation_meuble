@@ -1,27 +1,27 @@
 import { Link } from 'react-router-dom';
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
 import slugify from '../utils/slugify';
-import type { MaterialLabel } from '../constants/constants';
 import useToggle from '../hooks/useToggle';
 import FormField from './FormField';
 import { useEffect, useRef, useState } from 'react';
 import CheckIcon from '../assets/CheckIcon';
 import TagIcon from '../assets/TagIcon';
 import PlusIcon from '../assets/PlusIcon';
-
-type FurnitureProps = {
-  id: string;
-  img?: string;
-  name: string;
-  materials: MaterialLabel[];
-  category: 'armoire' | 'étagère';
-  quantity: number;
-};
+import type { Material } from '../pages/HomePage';
 
 const fallbackImg =
   'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FI%2F61yLZ0ct4jL._AC_SL1500_.jpg&f=1&nofb=1&ipt=0f5b1e8047bb48843e87a04276b699075e7faa908d6f0f709e156b5e7299783a';
 
-function Furniture({ id, img, name, materials, category, quantity }: FurnitureProps) {
+type FurnitureProps = {
+  _id: string;
+  image: string;
+  title: string;
+  materials: Material[];
+  category: { name: string };
+  quantity: number;
+};
+
+function Furniture({ _id, image, title, materials, category, quantity }: FurnitureProps) {
   const { value: isQuantityField, toggle: toggleQuantityField } = useToggle();
   const [newQuantity, setNewQuantity] = useState<number>(0);
   const fieldRef = useRef<HTMLDivElement>(null);
@@ -40,22 +40,22 @@ function Furniture({ id, img, name, materials, category, quantity }: FurniturePr
 
   return (
     <li
-      key={id}
+      key={_id}
       className='w-full rounded-4xl bg-white flex hover:transform hover:-translate-y-1 transition flex-col justify-between h-fit p-2'
     >
-      <img className='rounded-4xl w-full h-80 object-cover' src={img || fallbackImg} />
+      <img className='rounded-4xl w-full h-80 object-cover' src={image || fallbackImg} />
 
       <div className='p-5 flex flex-col gap-y-10'>
         <div className='flex flex-col justify-center gap-3'>
-          <span className='font-bold text-2xl truncate'>{name}</span>
+          <span className='font-bold text-2xl truncate'>{title}</span>
           <ul className='flex gap-x-3'>
             {materials.map((material) => (
               <Link
-                key={material}
-                to={`/material/${slugify(material)}`}
+                key={material._id}
+                to={`/material/${slugify(material.name)}`}
                 className='bg-gray-100 rounded-lg px-3 py-1 font-medium hover:bg-gray-200 transition'
               >
-                {capitalizeFirstLetter(material)}
+                {capitalizeFirstLetter(material.name)}
               </Link>
             ))}
           </ul>
@@ -84,7 +84,7 @@ function Furniture({ id, img, name, materials, category, quantity }: FurniturePr
             </button>
           )}
           <span className='flex gap-x-2'>
-            <TagIcon /> <strong>{capitalizeFirstLetter(category)}</strong>
+            <TagIcon /> <strong>{capitalizeFirstLetter(category.name)}</strong>
           </span>
           {/* <span>
           Entreprise: <strong>{company}</strong>
