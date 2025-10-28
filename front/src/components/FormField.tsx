@@ -1,4 +1,5 @@
 import React from 'react';
+import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
 
 interface FormFieldProps {
   label?: string;
@@ -23,7 +24,7 @@ function FormField({
     <div className='flex flex-col gap-1'>
       {label && (
         <label htmlFor={name} className='text-sm font-medium text-gray-700'>
-          {label}
+          {capitalizeFirstLetter(label)}
         </label>
       )}
 

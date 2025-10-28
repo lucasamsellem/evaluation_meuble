@@ -18,7 +18,7 @@ function HomePage() {
         <NewFurnitureForm />
       </Modal>
 
-      <ul className='grid grid-cols-3 gap-5'>
+      <ul className='grid grid-cols-3 gap-8'>
         {Object.values(data.furnitures).map(
           ({ description, title, image, quantity, category_id, materials }) => (
             <Furniture

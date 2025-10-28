@@ -3,16 +3,23 @@ type ActionButtonProps = {
   type?: 'button' | 'submit' | 'reset';
   className?: string;
   onClick?: () => void;
+  isLoading?: boolean;
 };
 
-function ActionButton({ type = 'button', children, className, onClick }: ActionButtonProps) {
+function ActionButton({
+  type = 'button',
+  className,
+  isLoading,
+  onClick,
+  children,
+}: ActionButtonProps) {
   return (
     <button
       className={`text-white bg-blue-500 px-3 py-2 rounded-xl font-semibold ${className}`}
       onClick={onClick}
       type={type}
     >
-      {children}
+      {isLoading ? 'Loading...' : children}
     </button>
   );
 }
