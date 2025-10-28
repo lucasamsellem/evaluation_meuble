@@ -1,4 +1,7 @@
 import Furniture from "../db/models/Furniture.js";
+import User from "../db/models/User.js";
+import crypto from "crypto";
+import jwt from "jsonwebtoken";
 
 export const publicController = {
 	dashboard: async (req, res) => {
@@ -6,17 +9,38 @@ export const publicController = {
 		res.status(200).json(data);
 	},
 
-	materialDetail: (req, res) => {
-		const { type } = req.params;
-		res.status(200).send(`Détail du matériel: ${type}`);
-	},
+	postLogin: async (req, res) => {
+		try {
+			const { username, password } = req.body;
 
-	getLogin: (req, res) => {
-		res.status(200).send("Page de connexion admin");
-	},
+			const user = await User.findOne({ username });
 
-	postLogin: (req, res) => {
-		res.status(200).json({ message: "Tentative de connexion reçue" });
+			// Vérifications username & password
+
+			if (!user) {
+				return res
+					.status(401)
+					.json({ error: "Identifiants invalides" });
+			}
+
+			const hashedPassword = crypto
+				.createHmac("sha256", process.env.PASSWORD_SECRET)
+				.update(password)
+				.digest("hex");
+
+			if (user.password !== hashedPassword) {
+				return res
+					.status(401)
+					.json({ error: "Identifiants invalides" });
+			}
+
+			// Création JWT
+
+			const token = jwt.sign({
+				userId: user._id,
+				username: user.username,
+			});
+		} catch (err) {}
 	},
 };
 

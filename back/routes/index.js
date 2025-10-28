@@ -14,7 +14,6 @@ const router = Router();
 router.get("/", publicController.dashboard);
 router.get("/material/:type", publicController.materialDetail);
 
-router.get("/login", publicController.getLogin); // Bien vérifier que l'admin N'EST PAS CONNECTÉ
 router.post("/login", publicController.postLogin);
 
 // --- ADMIN --- (Bien vérifier que L'ADMIN EST CONNECTÉ)

@@ -1,7 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-import session from "express-session";
-import MongoStore from "connect-mongo";
 import router from "./routes/index.js";
 import cors from "cors";
 
@@ -17,16 +15,6 @@ const server = express();
 
 server.use(cors());
 server.use(express.urlencoded({ extended: false }));
-server.use(
-	session({
-		name: "evaluation-session",
-		secret: session_secret,
-		resave: true,
-		saveUninitialized: true,
-		store: MongoStore.create({ mongoUrl: mongo_url }),
-	})
-);
-
 server.use(router);
 
 server.listen(port, host, () => {
