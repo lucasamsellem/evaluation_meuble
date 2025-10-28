@@ -3,10 +3,10 @@ import Header from './layout/Header';
 
 function App() {
   return (
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col min-h-screen font-display'>
       <Header />
 
-      <main className='p-5 flex-1'>
+      <main className='p-5 flex-1 bg-gray-100'>
         <Outlet /> {/* Ici seront rendues toutes les routes enfants */}
       </main>
 
