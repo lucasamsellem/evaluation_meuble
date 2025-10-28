@@ -1,14 +1,16 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from './layout/Navbar';
+import Header from './layout/Header';
 
 function App() {
   return (
-    <div className='p-5'>
-      <Navbar />
+    <div className='flex flex-col min-h-screen'>
+      <Header />
 
-      <main>
+      <main className='p-5 flex-1'>
         <Outlet /> {/* Ici seront rendues toutes les routes enfants */}
       </main>
+
+      <footer className='bg-blue-500 text-white p-3 text-center'>@Issa @Lucas</footer>
     </div>
   );
 }
