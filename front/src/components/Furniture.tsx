@@ -18,15 +18,15 @@ type FurnitureProps = {
   quantity: number;
 };
 
+const fallbackImg =
+  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FI%2F61yLZ0ct4jL._AC_SL1500_.jpg&f=1&nofb=1&ipt=0f5b1e8047bb48843e87a04276b699075e7faa908d6f0f709e156b5e7299783a';
+
 function Furniture({ id, img, name, materials, category, quantity }: FurnitureProps) {
   const { value: isQuantityField, toggle: toggleQuantityField } = useToggle();
-  const [newQuantity, setNewQuantity] = useState<number>(1);
+  const [newQuantity, setNewQuantity] = useState<number>(0);
   const fieldRef = useRef<HTMLDivElement>(null);
 
   // TODO: AJOUTER COMANY QUAND ISSA AURA FAIT
-
-  const fallbackImg =
-    'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FI%2F61yLZ0ct4jL._AC_SL1500_.jpg&f=1&nofb=1&ipt=0f5b1e8047bb48843e87a04276b699075e7faa908d6f0f709e156b5e7299783a';
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,14 +34,15 @@ function Furniture({ id, img, name, materials, category, quantity }: FurniturePr
         toggleQuantityField();
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
-
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isQuantityField, toggleQuantityField]);
 
   return (
-    <li key={id} className='w-full rounded-4xl bg-white flex flex-col justify-between h-fit p-2'>
+    <li
+      key={id}
+      className='w-full rounded-4xl bg-white flex hover:transform hover:-translate-y-1 transition flex-col justify-between h-fit p-2'
+    >
       <img className='rounded-4xl w-full h-80 object-cover' src={img || fallbackImg} />
 
       <div className='p-5 flex flex-col gap-y-10'>
@@ -52,7 +53,7 @@ function Furniture({ id, img, name, materials, category, quantity }: FurniturePr
               <Link
                 key={material}
                 to={`/material/${slugify(material)}`}
-                className='bg-gray-100 rounded-lg px-3 py-1 hover:bg-gray-200 transition'
+                className='bg-gray-100 rounded-lg px-3 py-1 font-medium hover:bg-gray-200 transition'
               >
                 {capitalizeFirstLetter(material)}
               </Link>
@@ -79,7 +80,7 @@ function Furniture({ id, img, name, materials, category, quantity }: FurniturePr
               onClick={toggleQuantityField}
               className='hover:opacity-50 rounded-xl flex gap-x-2 transition'
             >
-              <PlusIcon /> <strong>{quantity}</strong>
+              <PlusIcon /> <strong>{newQuantity || quantity}</strong>
             </button>
           )}
           <span className='flex gap-x-2'>
