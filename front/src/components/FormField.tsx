@@ -1,12 +1,13 @@
 import React from 'react';
 
 interface FormFieldProps {
-  label: string;
+  label?: string;
   value: string | number;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   type?: string;
   name?: string;
+  className?: string;
 }
 
 function FormField({
@@ -16,20 +17,25 @@ function FormField({
   placeholder = '',
   type = 'text',
   name,
+  className = '',
 }: FormFieldProps) {
   return (
     <div className='flex flex-col gap-1'>
-      <label htmlFor={name} className='text-sm font-medium text-gray-700'>
-        {label}
-      </label>
+      {label && (
+        <label htmlFor={name} className='text-sm font-medium text-gray-700'>
+          {label}
+        </label>
+      )}
+
       <input
         id={name}
         name={name}
         type={type}
+        min={0}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className='border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition'
+        className={`border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 transition ${className}`}
       />
     </div>
   );
