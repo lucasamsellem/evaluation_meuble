@@ -11,14 +11,14 @@ function HomePage() {
   return (
     <div className='flex flex-col'>
       <ActionButton className='mb-5 ml-auto' onClick={toggleModal}>
-        <span className='mr-1'>+</span> New Furniture
+        <span className='mr-1'>+</span> Nouveau meuble
       </ActionButton>
 
       <Modal isOpen={isOpen} onClose={toggleModal} title='Ajouter un nouveau meuble'>
         <NewFurnitureForm />
       </Modal>
 
-      <ul className='grid grid-cols-3 gap-8'>
+      <ul className='grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
         {Object.values(data.furnitures).map(
           ({ description, title, image, quantity, category_id, materials }) => (
             <Furniture

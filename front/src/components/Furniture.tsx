@@ -47,7 +47,7 @@ function Furniture({ id, img, name, materials, category, quantity }: FurniturePr
 
       <div className='p-5 flex flex-col gap-y-10'>
         <div className='flex flex-col justify-center gap-3'>
-          <span className='font-bold text-2xl'>{name}</span>
+          <span className='font-bold text-2xl truncate'>{name}</span>
           <ul className='flex gap-x-3'>
             {materials.map((material) => (
               <Link
