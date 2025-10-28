@@ -9,9 +9,6 @@ import TagIcon from '../assets/TagIcon';
 import PlusIcon from '../assets/PlusIcon';
 import type { Material } from '../pages/HomePage';
 
-const fallbackImg =
-  'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FI%2F61yLZ0ct4jL._AC_SL1500_.jpg&f=1&nofb=1&ipt=0f5b1e8047bb48843e87a04276b699075e7faa908d6f0f709e156b5e7299783a';
-
 type FurnitureProps = {
   _id: string;
   image: string;
@@ -45,8 +42,6 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
     }
   };
 
-  // TODO: AJOUTER COMANY QUAND ISSA AURA FAIT
-
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (isQuantityField && fieldRef.current && !fieldRef.current.contains(event.target as Node)) {
@@ -62,7 +57,7 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
       key={_id}
       className='w-full rounded-4xl bg-white flex hover:transform hover:-translate-y-1 transition flex-col justify-between h-fit p-2'
     >
-      <img className='rounded-4xl w-full h-80 object-cover' src={image || fallbackImg} />
+      <img className='rounded-4xl w-full h-80 object-cover' src={image} />
 
       <div className='p-5 flex flex-col gap-y-10'>
         <div className='flex flex-col justify-center gap-3'>
