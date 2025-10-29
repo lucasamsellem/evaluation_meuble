@@ -18,6 +18,7 @@ function ActionButton({
       className={`text-white bg-blue-500 px-3 py-2 rounded-xl font-semibold ${className}`}
       onClick={onClick}
       type={type}
+      disabled={isLoading}
     >
       {isLoading ? 'Loading...' : children}
     </button>
