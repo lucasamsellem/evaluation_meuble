@@ -41,9 +41,15 @@ function Header() {
             </NavLink>
           </>
         ) : (
-          <NavLink to='/login' className='opacity-80 hover:opacity-100 transition'>
-            Connexion
-          </NavLink>
+          <>
+            <NavLink to='/' className='opacity-80 hover:opacity-100 transition'>
+              Accueil
+            </NavLink>
+
+            <NavLink to='/login' className='opacity-80 hover:opacity-100 transition'>
+              Connexion
+            </NavLink>
+          </>
         )}
       </nav>
 

@@ -5,6 +5,7 @@ import { useLocalStorage } from '../hooks/useLocalStorage';
 import useModal from '../hooks/useModal';
 import NewFurnitureForm from '../layout/NewFurnitureForm';
 import { useEffect, useState } from 'react';
+import getAuthData from '../utils/getAuthData';
 
 export type Material = {
   _id: string;
@@ -30,6 +31,9 @@ const TABS = [
 ];
 
 function HomePage() {
+  const authData = getAuthData();
+  const token = authData?.token;
+
   const { isOpen, toggleModal } = useModal();
   const [furnitures, setFurnitures] = useLocalStorage<FurnitureType[]>('furnitures', []);
   const [categoryToRender, setCategoryToRender] = useState<string | null>(null);
@@ -44,11 +48,7 @@ function HomePage() {
   return (
     <div className='flex flex-col'>
       <div className='flex items-center gap-x-10 mb-5'>
-        <ActionButton className=' ml-auto' onClick={toggleModal}>
-          <span className='mr-1'>+</span> Nouveau meuble
-        </ActionButton>
-
-        <div className='flex bg-blue-500 rounded-2xl p-1 '>
+        <div className='flex bg-blue-500 rounded-2xl p-1 mr-auto'>
           {TABS.map((tab) => {
             const isActive = categoryToRender === tab.value;
 
@@ -65,6 +65,12 @@ function HomePage() {
             );
           })}
         </div>
+
+        {token && (
+          <ActionButton className='' onClick={toggleModal}>
+            <span className='mr-1'>+</span> Nouveau meuble
+          </ActionButton>
+        )}
       </div>
 
       <Modal isOpen={isOpen} onClose={toggleModal} title='Ajouter un nouveau meuble'>

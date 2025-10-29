@@ -5,6 +5,7 @@ import { useState } from 'react';
 import TagIcon from '../assets/TagIcon';
 import PlusIcon from '../assets/PlusIcon';
 import type { Material } from '../pages/HomePage';
+import getAuthData from '../utils/getAuthData';
 
 type FurnitureProps = {
   _id: string;
@@ -16,6 +17,9 @@ type FurnitureProps = {
 };
 
 function Furniture({ _id, image, title, materials, category, quantity }: FurnitureProps) {
+  const authData = getAuthData();
+  const token = authData?.token;
+
   const [updatedQuantity, setUpdatedQuantity] = useState<number>(quantity);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -69,15 +73,21 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
         </div>
 
         <div className='flex items-center justify-between'>
-          <button
-            onClick={handleUpdateQuantity}
-            className={`${
-              isLoading ? 'pointer-events-none' : ''
-            } hover:opacity-50 rounded-xl flex gap-x-2 transition`}
-            disabled={isLoading}
-          >
-            <PlusIcon /> <strong>{updatedQuantity}</strong>
-          </button>
+          {token ? (
+            <button
+              onClick={handleUpdateQuantity}
+              className={`${
+                isLoading ? 'pointer-events-none' : ''
+              } hover:opacity-50 rounded-xl flex gap-x-2 transition`}
+              disabled={isLoading}
+            >
+              <PlusIcon /> <strong>{updatedQuantity}</strong>
+            </button>
+          ) : (
+            <span className='flex gap-x-2'>
+              <PlusIcon /> <strong>{quantity}</strong>
+            </span>
+          )}
 
           <span className='flex gap-x-2'>
             <TagIcon /> <strong>{capitalizeFirstLetter(category.name)}</strong>

@@ -5,15 +5,23 @@ import NotFoundPage from '../pages/NotFoundPage';
 import Dashboard from '../pages/DashboardPage';
 import LoginPage from '../pages/LoginPage';
 import MaterialPage from '../pages/MaterialPage';
+import ProtectedRoute from './ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
     children: [
-      { index: true, element: <HomePage /> }, // équivaut à path="/"
+      { index: true, element: <HomePage /> },
       { path: 'login', element: <LoginPage /> },
-      { path: 'dashboard', element: <Dashboard /> },
+      {
+        path: 'dashboard',
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
       { path: 'material/:material', element: <MaterialPage /> },
       { path: '*', element: <NotFoundPage /> },
     ],
