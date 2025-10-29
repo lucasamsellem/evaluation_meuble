@@ -89,6 +89,7 @@ function HomePage() {
               quantity={quantity}
               category={category}
               materials={materials}
+              onFurnitures={setFurnitures}
             />
           ))}
       </ul>
