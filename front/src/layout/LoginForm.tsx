@@ -3,11 +3,13 @@ import FormField from '../components/FormField';
 import ActionButton from '../components/ActionButton';
 
 // username : "admin"
-// password : "0658480b2a13250839747060d9c90d4d72b6a8f7797b607f1bb6ff1f4fa2b34e"
+// password : "jeuh345"
+
+// TODO : RENVOYER UN JWT DES QUE JACCEDE A PAGE PROTEGEE
 
 function LoginForm() {
   const [credentials, setCredentials] = useState({
-    email: '',
+    username: '',
     password: '',
   });
 
@@ -22,14 +24,21 @@ function LoginForm() {
       const res = await fetch('http://localhost:8000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: credentials.email, password: credentials.password }),
+        body: JSON.stringify({ username: credentials.username, password: credentials.password }),
       });
 
-      console.log(res);
+      if (!res.ok) {
+        setError('Identifiants invalides');
+        throw new Error(`Erreur HTTP : ${res.status}`);
+      }
+
+      window.location.replace('/');
+
+      const authData = await res.json();
+      localStorage.setItem('authData', JSON.stringify(authData));
     } catch (error) {
       if (error instanceof Error) {
         console.log(error);
-        setError(error.message);
       }
     } finally {
       setIsLoading(false);
@@ -46,11 +55,11 @@ function LoginForm() {
       {error && <p className='text-red-600 text-sm text-center'>{error}</p>}
 
       <FormField
-        value={credentials.email}
-        label='email'
-        type='email'
-        name='email'
-        onChange={(e) => setCredentials((prev) => ({ ...prev, email: e.target.value }))}
+        value={credentials.username}
+        label='username'
+        type='text'
+        name='username'
+        onChange={(e) => setCredentials((prev) => ({ ...prev, username: e.target.value }))}
       />
 
       <FormField
