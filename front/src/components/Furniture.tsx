@@ -20,7 +20,8 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleUpdateQuantity = async () => {
-    setUpdatedQuantity((prev) => prev + 1);
+    const newQuantity = updatedQuantity + 1;
+    setUpdatedQuantity(newQuantity);
 
     setIsLoading(true);
 
@@ -28,7 +29,7 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
       const res = await fetch('http://localhost:8000/furniture/', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: _id, updatedQuantity }),
+        body: JSON.stringify({ id: _id, updatedQuantity: newQuantity }),
       });
 
       if (!res.ok) {
@@ -75,7 +76,7 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
             } hover:opacity-50 rounded-xl flex gap-x-2 transition`}
             disabled={isLoading}
           >
-            <PlusIcon /> <strong>{updatedQuantity || quantity}</strong>
+            <PlusIcon /> <strong>{updatedQuantity}</strong>
           </button>
 
           <span className='flex gap-x-2'>
