@@ -1,16 +1,16 @@
 import { Router } from "express";
 import { publicController, adminController } from "../controllers/index.js";
 import { isAuthenticated } from "../middlewares/auth.js";
-import { furnitureValidation } from "../middlewares/formValidation.js";
+import {
+	furnitureValidation,
+	quantityValidation,
+} from "../middlewares/formValidation.js";
 
 const router = Router();
 
 // --- PUBLIC ---
 
 // get / dashboard (liste meubles)
-// get / détail matériel
-
-// get / login
 // post / login
 
 router.get("/", publicController.dashboard);
@@ -18,22 +18,26 @@ router.post("/login", publicController.postLogin);
 
 // --- ADMIN --- (Bien vérifier que L'ADMIN EST CONNECTÉ)
 
-// get / statistiques sur les meubles
 // post / ajout meuble
 // put / modification quantité meuble
 
-router.get("/stats", isAuthenticated, adminController.stats);
 router.post(
 	"/furniture/",
-	// isAuthenticated,
+	isAuthenticated,
 	furnitureValidation,
 	adminController.addFurniture
 );
-router.put("/furniture/", adminController.changeQuantity);
+router.put(
+	"/furniture/",
+	isAuthenticated,
+	quantityValidation,
+	adminController.changeQuantity
+);
 
 // --- ERREURS ---
 
-// router.get("*", publicController.notFoundError);
+router.all(/(.*)/, publicController.notFoundError);
+
 // * / fallback universel
 
 export default router;
