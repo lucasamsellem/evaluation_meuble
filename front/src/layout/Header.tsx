@@ -1,45 +1,69 @@
 import { NavLink } from 'react-router-dom';
 import LogoutIcon from '../assets/LogoutIcon';
-
-const NAVBAR_ELEMENTS = {
-  HOME: { path: '/', label: 'Home' },
-  DASHBOARD: { path: '/dashboard', label: 'Dashboard' },
-};
+import getAuthData from '../utils/getAuthData';
 
 function Header() {
+  const authData = getAuthData();
+  const token = authData?.token;
+  const username = authData?.username;
+
+  const handleLogout = () => {
+    localStorage.removeItem('authData');
+    window.location.reload();
+  };
+
   return (
-    <header className='flex flex-col md:flex-row bg-blue-500 p-4 md:p-5 text-white font-semibold items-center justify-between gap-4 md:gap-x-10'>
-      <h1 className='text-2xl'>Mes Meubles</h1>
+    <header className='flex flex-col md:flex-row items-center justify-between bg-blue-500 p-4 md:p-5 text-white font-semibold gap-4 md:gap-x-10'>
+      <h1 className='text-2xl text-center md:text-left'>Mes Meubles</h1>
 
-      <div className='flex flex-col md:flex-row items-center gap-4 md:gap-x-10 w-full md:w-auto'>
-        <nav className='w-full md:w-auto border-b md:border-b-0 md:border-r-2 pb-2 md:pb-0 md:pr-10'>
-          <ul className='flex flex-col md:flex-row gap-2 md:gap-x-8 text-lg md:text-xl items-start md:items-center'>
-            {Object.values(NAVBAR_ELEMENTS).map(({ path, label }) => (
-              <li key={path}>
-                <NavLink
-                  to={path}
-                  className={({ isActive }) => (isActive ? 'opacity-100' : 'opacity-70')}
-                >
-                  {label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+      <nav className='flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-x-8 text-lg md:text-xl w-full md:w-auto'>
+        {token ? (
+          <>
+            <NavLink
+              to='/'
+              className={({ isActive }) =>
+                `transition-opacity duration-200 hover:opacity-100 ${
+                  isActive ? 'opacity-100 font-bold' : 'opacity-70'
+                }`
+              }
+            >
+              Accueil
+            </NavLink>
+            <NavLink
+              to='/dashboard'
+              className={({ isActive }) =>
+                `transition-opacity duration-200 hover:opacity-100 ${
+                  isActive ? 'opacity-100 font-bold' : 'opacity-70'
+                }`
+              }
+            >
+              Dashboard
+            </NavLink>
+          </>
+        ) : (
+          <NavLink to='/login' className='opacity-80 hover:opacity-100 transition'>
+            Connexion
+          </NavLink>
+        )}
+      </nav>
 
-        <div className='flex items-center gap-3 md:gap-x-5'>
-          <span className='text-sm md:text-base'>Lucas Amsellem</span>
-
+      {token && (
+        <div className='flex flex-col md:flex-row items-center gap-3 md:gap-x-5 mt-2 md:mt-0'>
+          <span className='text-sm md:text-base truncate'>{username}</span>
           <img
             src='https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimgcdn.stablediffusionweb.com%2F2024%2F12%2F11%2F35a41202-c7ab-467b-ac37-81e8f13d6eb7.jpg&f=1&nofb=1&ipt=eeb5fa124fe009ba9b7d79940295b800a7ada18ed996c293d0461a8a3e8b0a8d'
             className='w-10 h-10 rounded-full object-cover'
+            alt='Avatar'
           />
-
-          <button>
+          <button
+            onClick={handleLogout}
+            className='p-2  transition-colors'
+            aria-label='Déconnexion'
+          >
             <LogoutIcon />
           </button>
         </div>
-      </div>
+      )}
     </header>
   );
 }
