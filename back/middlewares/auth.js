@@ -8,7 +8,7 @@ export const isAuthenticated = (req, res, next) => {
 		return res.status(401).json({ error: "Token invalide" });
 	}
 
-	jwt.verify(token, JWT_SECRET, (err, user) => {
+	jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
 		if (err) {
 			return res.status(401).json({ error: "Token invalide" });
 		}
