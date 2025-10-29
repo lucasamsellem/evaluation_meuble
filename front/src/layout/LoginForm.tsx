@@ -48,7 +48,7 @@ function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className='bg-white mx-auto shadow-md rounded-2xl p-8 w-full max-w-sm space-y-6'
+      className='bg-white mx-auto shadow-md rounded-2xl p-8 w-full max-w-sm space-y-8'
     >
       <h2 className='text-2xl font-semibold text-center'>Authentification</h2>
 

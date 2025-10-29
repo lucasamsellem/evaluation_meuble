@@ -49,7 +49,7 @@ function DashboardPage() {
   };
 
   return (
-    <div className='flex flex-col items-center gap-12 py-12'>
+    <div className='flex flex-col items-center w-full px-5 gap-12'>
       <DashboardCard title='Quantité de meubles'>{furnitures.length}</DashboardCard>
 
       <DashboardCard title='Doughnut'>
