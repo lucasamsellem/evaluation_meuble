@@ -102,7 +102,6 @@ export const adminController = {
 			if (!furniture) {
 				return res.status(404).json({ error: "Meuble non trouvé." });
 			}
-			console.log(furniture);
 
 			furniture.quantity = updatedQuantity;
 			await furniture.save();
