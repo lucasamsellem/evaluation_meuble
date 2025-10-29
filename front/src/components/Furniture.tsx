@@ -1,10 +1,7 @@
 import { Link } from 'react-router-dom';
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
 import slugify from '../utils/slugify';
-import useToggle from '../hooks/useToggle';
-import FormField from './FormField';
-import { useEffect, useRef, useState } from 'react';
-import CheckIcon from '../assets/CheckIcon';
+import { useState } from 'react';
 import TagIcon from '../assets/TagIcon';
 import PlusIcon from '../assets/PlusIcon';
 import type { Material } from '../pages/HomePage';
@@ -19,16 +16,19 @@ type FurnitureProps = {
 };
 
 function Furniture({ _id, image, title, materials, category, quantity }: FurnitureProps) {
-  const { value: isQuantityField, toggle: toggleQuantityField } = useToggle();
-  const [newQuantity, setNewQuantity] = useState<number>(0);
-  const fieldRef = useRef<HTMLDivElement>(null);
+  const [updatedQuantity, setUpdatedQuantity] = useState<number>(quantity);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleUpdateQuantity = async () => {
+    setUpdatedQuantity((prev) => prev + 1);
+
+    setIsLoading(true);
+
     try {
       const res = await fetch('http://localhost:8000/furniture/', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: _id, updatedQuantity: newQuantity }),
+        body: JSON.stringify({ id: _id, updatedQuantity }),
       });
 
       if (!res.ok) {
@@ -39,18 +39,10 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
       console.log('Réponse serveur :', data);
     } catch (error) {
       console.error('Erreur lors de la mise à jour :', error);
+    } finally {
+      setIsLoading(false);
     }
   };
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isQuantityField && fieldRef.current && !fieldRef.current.contains(event.target as Node)) {
-        toggleQuantityField();
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [isQuantityField, toggleQuantityField]);
 
   return (
     <li
@@ -75,34 +67,20 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
           </ul>
         </div>
 
-        <div ref={fieldRef} className='flex items-center justify-between'>
-          {isQuantityField ? (
-            <form className='flex items-center gap-x-2' onSubmit={(e) => e.preventDefault()}>
-              <FormField
-                value={newQuantity}
-                onChange={(e) => setNewQuantity(Number(e.target.value))}
-                type='number'
-                className='w-20'
-              />
+        <div className='flex items-center justify-between'>
+          <button
+            onClick={handleUpdateQuantity}
+            className={`${
+              isLoading ? 'pointer-events-none' : ''
+            } hover:opacity-50 rounded-xl flex gap-x-2 transition`}
+            disabled={isLoading}
+          >
+            <PlusIcon /> <strong>{updatedQuantity || quantity}</strong>
+          </button>
 
-              <button type='submit' onClick={handleUpdateQuantity}>
-                <CheckIcon />
-              </button>
-            </form>
-          ) : (
-            <button
-              onClick={toggleQuantityField}
-              className='hover:opacity-50 rounded-xl flex gap-x-2 transition'
-            >
-              <PlusIcon /> <strong>{newQuantity || quantity}</strong>
-            </button>
-          )}
           <span className='flex gap-x-2'>
             <TagIcon /> <strong>{capitalizeFirstLetter(category.name)}</strong>
           </span>
-          {/* <span>
-          Entreprise: <strong>{company}</strong>
-        </span> */}
         </div>
       </div>
     </li>
