@@ -14,6 +14,7 @@ const session_secret = process.env.SESSION_SECRET || "session-secret";
 const server = express();
 
 server.use(cors());
+server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(router);
 

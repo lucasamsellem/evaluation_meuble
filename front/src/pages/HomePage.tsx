@@ -55,10 +55,8 @@ function HomePage() {
             return (
               <button
                 key={tab.value}
-                onClick={() =>
-                  isActive ? setCategoryToRender(null) : setCategoryToRender(tab.value)
-                }
-                className={`px-6 py-1 rounded-xl font-medium transition-all duration-200 ${
+                onClick={() => setCategoryToRender(isActive ? null : tab.value)}
+                className={`px-6 py-1 rounded-xl font-semibold transition-all duration-200 ${
                   isActive ? 'bg-white text-gray-900 shadow-md' : 'text-white hover:opacity-80'
                 }`}
               >

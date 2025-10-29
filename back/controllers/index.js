@@ -77,17 +77,41 @@ export const adminController = {
 			await newFurniture.save();
 			res.status(201).json({ message: "Meuble ajouté (simulation)" });
 		} catch (error) {
-			return res
-				.status(500)
-				.json({
-					error: "Erreur lors de l'ajout du meuble",
-					detail: error.message,
-				});
+			return res.status(500).json({
+				error: "Erreur lors de l'ajout du meuble",
+				detail: error.message,
+			});
 		}
 	},
 
-	changeQuantity: (req, res) => {
-		console.log(req.body);
-		res.status(200).json({ message: "Quantité mise à jour (simulation)" });
+	changeQuantity: async (req, res) => {
+		try {
+			const { id, updatedQuantity } = req.body;
+
+			if (
+				typeof updatedQuantity !== "number" ||
+				updatedQuantity < 0 ||
+				!Number.isInteger(updatedQuantity)
+			) {
+				return res.status(400).json({
+					error: "La quantité doit être un nombre entier positif.",
+				});
+			}
+
+			const furniture = await Furniture.findById(id);
+			if (!furniture) {
+				return res.status(404).json({ error: "Meuble non trouvé." });
+			}
+
+			furniture.quantity = updatedQuantity;
+			await furniture.save();
+
+			res.status(200).json({ message: "Quantité modifiée avec succès." });
+		} catch (error) {
+			return res.status(500).json({
+				error: "Erreur lors de la modification de la quantité",
+				detail: error.message,
+			});
+		}
 	},
 };

@@ -29,7 +29,7 @@ router.post(
 	furnitureValidation,
 	adminController.addFurniture
 );
-router.put("/furniture/", isAuthenticated, adminController.changeQuantity);
+router.put("/furniture/", adminController.changeQuantity);
 
 // --- ERREURS ---
 
