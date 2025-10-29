@@ -1,10 +1,13 @@
+import getAuthData from './getAuthData';
+
 type FetchOptions = Omit<RequestInit, 'headers'> & {
   headers?: Record<string, string>;
 };
 
 // Helper pour ajouter automatiquement le token
 const fetchWithAuth = async (endpoint: string, options: FetchOptions = {}) => {
-  const token = localStorage.getItem('token');
+  const authData = getAuthData();
+  const token = authData?.token;
 
   const config = {
     ...options,

@@ -1,65 +1,66 @@
-import Furniture from "../db/models/Furniture.js";
+import Furniture from '../db/models/Furniture.js';
 
 export async function quantityValidation(req, res, next) {
-	if (!req.body || Object.keys(req.body).length === 0) {
-		return res.status(400).json({ error: "Données manquantes." });
-	}
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: 'Données manquantes.' });
+  }
 
-	const {
-		body: { id, updatedQuantity },
-	} = req;
+  const {
+    body: { id, updatedQuantity },
+  } = req;
 
-	if (!id || typeof id !== "string") {
-		return res.status(400).json({ error: "ID de meuble invalide." });
-	}
+  if (!id || typeof id !== 'string') {
+    return res.status(400).json({ error: 'ID de meuble invalide.' });
+  }
 
-	const furniture = await Furniture.findById(id);
-	if (!furniture) {
-		return res.status(404).json({ error: "Meuble non trouvé." });
-	}
+  const furniture = await Furniture.findById(id);
+  if (!furniture) {
+    return res.status(404).json({ error: 'Meuble non trouvé.' });
+  }
 
-	if (furniture.quantity !== updatedQuantity - 1) {
-		return res.status(409).json({
-			error: "La quantité a été modifiée par un autre utilisateur. Veuillez recharger la page et réessayer.",
-		});
-	}
+  if (furniture.quantity !== updatedQuantity - 1) {
+    return res.status(409).json({
+      error:
+        'La quantité a été modifiée par un autre utilisateur. Veuillez recharger la page et réessayer.',
+    });
+  }
 
-	next();
+  next();
 }
 
 export function furnitureValidation(req, res, next) {
-	if (!req.body || Object.keys(req.body).length === 0) {
-		return res.status(400).json({ error: "Données manquantes." });
-	}
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({ error: 'Données manquantes.' });
+  }
 
-	const {
-		body: { title, image, category, materials },
-	} = req;
+  console.log(req.body);
 
-	const titleTrimmed = title.trim();
+  const {
+    body: { title, image, category, materials },
+  } = req;
 
-	if (titleTrimmed.length < 3 || titleTrimmed.length > 50) {
-		return res.status(400).json({
-			error: "Le titre doit contenir entre 3 et 50 caractères.",
-		});
-	}
+  const titleTrimmed = title.trim();
 
-	if (!image || !image.trim()) {
-		return res.status(400).json({ error: "L'image est requise." });
-	}
+  if (titleTrimmed.length < 3 || titleTrimmed.length > 50) {
+    return res.status(400).json({
+      error: 'Le titre doit contenir entre 3 et 50 caractères.',
+    });
+  }
 
-	const validCategories = ["Armoire", "Étagère"];
-	if (!validCategories.includes(category)) {
-		return res.status(400).json({ error: "Catégorie invalide." });
-	}
+  if (!image || !image.trim()) {
+    return res.status(400).json({ error: "L'image est requise." });
+  }
 
-	if (materials.length === 0) {
-		return res
-			.status(400)
-			.json({ error: "Au moins un matériau est requis." });
-	}
+  const validCategories = ['Armoire', 'Étagère'];
+  if (!validCategories.includes(category.name)) {
+    return res.status(400).json({ error: 'Catégorie invalide.' });
+  }
 
-	next();
+  if (materials.length === 0) {
+    return res.status(400).json({ error: 'Au moins un matériau est requis.' });
+  }
+
+  next();
 }
 
 // Il peut potentiellement ajouter, puis appeler encore l'api

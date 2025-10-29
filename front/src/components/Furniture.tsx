@@ -6,6 +6,7 @@ import TagIcon from '../assets/TagIcon';
 import PlusIcon from '../assets/PlusIcon';
 import type { Material } from '../pages/HomePage';
 import getAuthData from '../utils/getAuthData';
+import fetchWithAuth from '../utils/fetchWithAuth';
 
 type FurnitureProps = {
   _id: string;
@@ -30,18 +31,16 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
     setIsLoading(true);
 
     try {
-      const res = await fetch('http://localhost:8000/furniture/', {
+      const res = await fetchWithAuth('furniture/', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: _id, updatedQuantity: newQuantity }),
       });
+
+      console.log(res);
 
       if (!res.ok) {
         throw new Error(`Erreur HTTP : ${res.status}`);
       }
-
-      const data = await res.json();
-      console.log('Réponse serveur :', data);
     } catch (error) {
       console.error('Erreur lors de la mise à jour :', error);
     } finally {

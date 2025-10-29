@@ -1,95 +1,124 @@
-import FormField from "../components/FormField";
-import ActionButton from "../components/ActionButton";
-import { useState } from "react";
-import SelectField from "../components/SelectField";
-import CheckboxesField from "../components/CheckboxesField";
-import { MATERIALS, CATEGORIES } from "../constants/constants";
+import FormField from '../components/FormField';
+import ActionButton from '../components/ActionButton';
+import { useState } from 'react';
+import SelectField from '../components/SelectField';
+import CheckboxesField from '../components/CheckboxesField';
+import { MATERIALS, CATEGORIES, COMPANIES } from '../constants/constants';
+import fetchWithAuth from '../utils/fetchWithAuth';
 
 type NewFurnitureFormValues = {
-	name: string;
-	materials: string[];
-	quantity: number;
-	category: string;
-	img: string;
+  title: string;
+  image: string;
+  category: string;
+  materials: string[];
+  quantity: number;
 };
 
 const INITIAL_NEW_FURNITURE_VALUES: NewFurnitureFormValues = {
-	name: "",
-	materials: [],
-	quantity: 1,
-	category: "armoire",
-	img: "",
+  title: '',
+  image: '',
+  category: CATEGORIES[0],
+  materials: [],
+  quantity: 1,
 };
 
 function NewFurnitureForm() {
-	const [newFurnitureValues, setNewFurnitureValues] =
-		useState<NewFurnitureFormValues>(INITIAL_NEW_FURNITURE_VALUES);
+  const [newFurnitureValues, setNewFurnitureValues] = useState<NewFurnitureFormValues>(
+    INITIAL_NEW_FURNITURE_VALUES
+  );
 
-	return (
-		<form className="flex flex-col gap-5">
-			<FormField
-				label="Nom"
-				value={newFurnitureValues.name}
-				onChange={(e) =>
-					setNewFurnitureValues((prev) => ({
-						...prev,
-						name: e.target.value,
-					}))
-				}
-			/>
+  const newMaterials = newFurnitureValues.materials.map((material) => {
+    return {
+      name: material,
+      type: Object.entries(MATERIALS).find(([, m]) => m.includes(material))?.[0],
+      provider: Object.entries(COMPANIES).find(([, m]) => m.includes(material))?.[0],
+    };
+  });
 
-			<FormField
-				label="Quantité"
-				type="number"
-				value={newFurnitureValues.quantity}
-				onChange={(e) =>
-					setNewFurnitureValues((prev) => ({
-						...prev,
-						quantity: Number(e.target.value),
-					}))
-				}
-			/>
+  const handleNewFurniture = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-			<CheckboxesField
-				label="Matériau"
-				options={MATERIALS}
-				values={newFurnitureValues.materials}
-				onChange={(values) =>
-					setNewFurnitureValues((prev) => ({
-						...prev,
-						materials: values,
-					}))
-				}
-			/>
+    try {
+      const res = await fetchWithAuth('furniture/', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...newFurnitureValues,
+          materials: newMaterials,
+          category: {
+            name: newFurnitureValues.category,
+          },
+        }),
+      });
 
-			<SelectField
-				label="Catégorie"
-				value={newFurnitureValues.category}
-				options={CATEGORIES}
-				onChange={(value) =>
-					setNewFurnitureValues((prev) => ({
-						...prev,
-						category: value,
-					}))
-				}
-			/>
+      if (!res.ok) {
+        throw new Error(`Erreur HTTP : ${res.status}`);
+      }
 
-			{/* IMAGE (Url valide) */}
-			<FormField
-				label="Image"
-				value={newFurnitureValues.img}
-				onChange={(e) =>
-					setNewFurnitureValues((prev) => ({
-						...prev,
-						img: e.target.value,
-					}))
-				}
-				placeholder="URL"
-			/>
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-			<ActionButton type="submit">Ajouter</ActionButton>
-		</form>
-	);
+  return (
+    <form className='flex flex-col gap-5' onSubmit={handleNewFurniture}>
+      <FormField
+        label='Nom'
+        value={newFurnitureValues.title}
+        onChange={(e) =>
+          setNewFurnitureValues((prev) => ({
+            ...prev,
+            title: e.target.value,
+          }))
+        }
+      />
+      <FormField
+        label='Quantité'
+        type='number'
+        value={newFurnitureValues.quantity}
+        onChange={(e) =>
+          setNewFurnitureValues((prev) => ({
+            ...prev,
+            quantity: Number(e.target.value),
+          }))
+        }
+      />
+      <CheckboxesField
+        label='Matériau'
+        options={Object.values(MATERIALS).flat()}
+        values={newFurnitureValues.materials}
+        onChange={(values) =>
+          setNewFurnitureValues((prev) => ({
+            ...prev,
+            materials: values,
+          }))
+        }
+      />
+      <SelectField
+        label='Catégorie'
+        value={newFurnitureValues.category}
+        options={CATEGORIES}
+        onChange={(value) =>
+          setNewFurnitureValues((prev) => ({
+            ...prev,
+            category: value,
+          }))
+        }
+      />
+      <FormField
+        label='Image'
+        value={newFurnitureValues.image}
+        onChange={(e) =>
+          setNewFurnitureValues((prev) => ({
+            ...prev,
+            image: e.target.value,
+          }))
+        }
+        placeholder='URL'
+      />
+      <ActionButton type='submit'>Ajouter</ActionButton>
+    </form>
+  );
 }
 
 export default NewFurnitureForm;

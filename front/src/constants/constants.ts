@@ -1,32 +1,19 @@
-export type MaterialLabel =
-  | 'frêne'
-  | 'chêne'
-  | 'noyer'
-  | 'acier'
-  | 'inox'
-  | 'aluminium'
-  | 'plastique';
-
 export interface Material {
-  label: MaterialLabel;
+  label: string;
   description: string;
   img: string;
 }
 
-export const CATEGORIES = ['armoire', 'étagère'];
+export const CATEGORIES = ['Armoire', 'Étagère'];
 
-export const COMPANIES: Record<string, MaterialLabel[]> = {
+export const COMPANIES: Record<string, string[]> = {
   BBois: ['noyer', 'chêne', 'frêne'],
-  MetaLo: ['inox', 'aluminium'],
+  MetaLo: ['inox', 'aluminium', 'acier'],
   pPlastique: ['plastique'],
 };
 
-export const MATERIALS: MaterialLabel[] = [
-  'frêne',
-  'chêne',
-  'noyer',
-  'inox',
-  'acier',
-  'aluminium',
-  'plastique',
-];
+export const MATERIALS: Record<string, string[]> = {
+  bois: ['frêne', 'chêne', 'noyer'],
+  fer: ['inox', 'acier', 'aluminium'],
+  plastique: ['plastique'],
+};
