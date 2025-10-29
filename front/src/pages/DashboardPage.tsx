@@ -2,7 +2,7 @@ import DashboardCard from '../components/DashboardCard';
 import capitalizeFirstLetter from '../utils/capitalizeFirstLetter';
 import type { FurnitureType } from './HomePage';
 import { Bar, Doughnut } from 'react-chartjs-2';
-import 'chart.js/auto'; // ADD THIS
+import 'chart.js/auto';
 
 const randomColor = (opacity = 0.6) => {
   const r = Math.floor(Math.random() * 256);

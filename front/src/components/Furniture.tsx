@@ -4,7 +4,7 @@ import slugify from '../utils/slugify';
 import { useState } from 'react';
 import TagIcon from '../assets/TagIcon';
 import PlusIcon from '../assets/PlusIcon';
-import type { Material } from '../pages/HomePage';
+import type { FurnitureType, Material } from '../pages/HomePage';
 import getAuthData from '../utils/getAuthData';
 import fetchWithAuth from '../utils/fetchWithAuth';
 
@@ -15,9 +15,18 @@ type FurnitureProps = {
   materials: Material[];
   category: { name: string };
   quantity: number;
+  onFurnitures: React.Dispatch<React.SetStateAction<FurnitureType[]>>;
 };
 
-function Furniture({ _id, image, title, materials, category, quantity }: FurnitureProps) {
+function Furniture({
+  _id,
+  image,
+  title,
+  materials,
+  category,
+  quantity,
+  onFurnitures,
+}: FurnitureProps) {
   const authData = getAuthData();
   const token = authData?.token;
 
@@ -25,18 +34,22 @@ function Furniture({ _id, image, title, materials, category, quantity }: Furnitu
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleUpdateQuantity = async () => {
+    setIsLoading(true);
+
     const newQuantity = updatedQuantity + 1;
     setUpdatedQuantity(newQuantity);
 
-    setIsLoading(true);
+    onFurnitures((prev) =>
+      prev.map((furniture) =>
+        furniture._id === _id ? { ...furniture, quantity: newQuantity } : furniture
+      )
+    );
 
     try {
       const res = await fetchWithAuth('furniture/', {
         method: 'PUT',
         body: JSON.stringify({ id: _id, updatedQuantity: newQuantity }),
       });
-
-      console.log(res);
 
       if (!res.ok) {
         throw new Error(`Erreur HTTP : ${res.status}`);

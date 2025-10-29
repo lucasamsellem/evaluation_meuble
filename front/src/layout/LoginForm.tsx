@@ -5,8 +5,6 @@ import ActionButton from '../components/ActionButton';
 // username : "admin"
 // password : "jeuh345"
 
-// TODO : RENVOYER UN JWT DES QUE JACCEDE A PAGE PROTEGEE
-
 function LoginForm() {
   const [credentials, setCredentials] = useState({
     username: '',
