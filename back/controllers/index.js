@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const publicController = {
 	dashboard: async (req, res) => {
-		const data = await Furniture.find({});
+		const data = await Furniture.find({}).sort({ createdAt: -1 });
 		res.status(200).json(data);
 	},
 
